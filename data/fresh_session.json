@@ -1,0 +1,158 @@
+[
+  {
+    "name": "eps_sid",
+    "value": "7aa420cb5702b8f8.1782551326.hgw2U40Do5IBUFAJtMDCdGa0TvPnfb5TD3m6gxqKLIo=",
+    "domain": ".springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "SID",
+    "value": "GDA5vgmrB1yqumOMk83XeO5Tqrk50_atZAEWMkknhyQYca0so1F34SWPHVWL__8O-KPkCYk_ahVQBGrt",
+    "domain": ".springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "BID",
+    "value": "GuG9mN2pVcZbPvGmSlmRHxZ8mokWJhijon8mdgukXgb3Z9Izp6k3JoE5hMp72Afmnz6n46Li6tkHjrKp",
+    "domain": ".springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "ISIDX",
+    "value": "9fc3d001-946e-4882-b39f-ea6515ec9bf7",
+    "domain": ".springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "QUEUEITSIDX",
+    "value": "jn6Q1d2CRScqL4n7f5Xt4d5qig114xOqx6ydtg6yzeQ",
+    "domain": ".springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "Queueit-Session-springboks",
+    "value": "EventId%3Dni27c9f0wct50cvlarka%26QueueId%3Dticketmastersportuk%26Expires%3D1782553127%26Hash%3Df088362bc05aed60634e788f9769038e68f1b4135953755e7f10f2064aa19859",
+    "domain": ".springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "ASP.NET_SessionId",
+    "value": "",
+    "domain": ".springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "uniqueid",
+    "value": "i5vrvfms1kmrhwntmi2tlbwz",
+    "domain": ".springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "selectedCulture",
+    "value": "en-GB",
+    "domain": ".springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "NSC_JOoyv0t0c5pvntnezxvauzenhpmncdv",
+    "value": "ffffffffc3a06e6745525d5f4f58455e445a4a423660",
+    "domain": ".springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "NSC_JOj4kiueda4eeqpejjnnfwe04nppwbv",
+    "value": "ffffffff0943ec7c45525d5f4f58455e445a4a423660",
+    "domain": ".springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "_GRECAPTCHA",
+    "value": "09AKhCRwjVxMghZcH8l24UE6dN_Zhsy8KcxAt7pBkfy2cCQHkL6zquQtNI7vF5juSDY4EpHK5b9iBYIOOsfqp3RWI",
+    "domain": "www.google.com",
+    "path": "/recaptcha"
+  },
+  {
+    "name": "ISIDX",
+    "value": "9fc3d001-946e-4882-b39f-ea6515ec9bf7",
+    "domain": "springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "QUEUEITSIDX",
+    "value": "jn6Q1d2CRScqL4n7f5Xt4d5qig114xOqx6ydtg6yzeQ",
+    "domain": "springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "Queueit-Session-springboks",
+    "value": "EventId%3Dni27c9f0wct50cvlarka%26QueueId%3Dticketmastersportuk%26Expires%3D1782553127%26Hash%3Df088362bc05aed60634e788f9769038e68f1b4135953755e7f10f2064aa19859",
+    "domain": "springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "ASP.NET_SessionId",
+    "value": "ebmdfpa2q2oxibj5hw0nhdcp",
+    "domain": "springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "uniqueid",
+    "value": "i5vrvfms1kmrhwntmi2tlbwz",
+    "domain": "springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "selectedCulture",
+    "value": "en-GB",
+    "domain": "springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "NSC_JOoyv0t0c5pvntnezxvauzenhpmncdv",
+    "value": "ffffffffc3a06e6745525d5f4f58455e445a4a423660",
+    "domain": "springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "NSC_JOj4kiueda4eeqpejjnnfwe04nppwbv",
+    "value": "ffffffff0943ec7c45525d5f4f58455e445a4a423660",
+    "domain": "springboks.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "Queue-it-token",
+    "value": "e_ni27c9f0wct50cvlarka~ts_1782551507~ce_true~rt_safetynet~h_e86064ed01e7435c4897caf11e522fb6e5c6d44c5f1261ab9da8a546c34deeee",
+    "domain": "hd-queue.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "Queue-it-visitorsession",
+    "value": "R7hn05BbgMlt_nqk9TQVvfzYxLTQawAg3VbFac8QwBo5j24la1hLQ7pTzLnPHxC-J5Z33hQAmGAuu_SBhWjhcKsT_EFo_jo",
+    "domain": "hd-queue.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "Queue-it-token",
+    "value": "e_ni27c9f0wct50cvlarka~ts_1782551507~ce_true~rt_safetynet~h_e86064ed01e7435c4897caf11e522fb6e5c6d44c5f1261ab9da8a546c34deeee",
+    "domain": ".hd-queue.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "Queue-it-visitorsession",
+    "value": "R7hn05BbgMlt_nqk9TQVvfzYxLTQawAg3VbFac8QwBo5j24la1hLQ7pTzLnPHxC-J5Z33hQAmGAuu_SBhWjhcKsT_EFo_jo",
+    "domain": ".hd-queue.tmtickets.co.za",
+    "path": "/"
+  },
+  {
+    "name": "_GRECAPTCHA",
+    "value": "09AKhCRwglkejHWF5tRoJRtRTfNRQYTQNDXRcUPAy60NzAe0oJN8RgyGGB6AR86n4dpSs7rDa1-6XJrzmGIE1AcQw",
+    "domain": ".www.google.com",
+    "path": "/recaptcha"
+  },
+  {
+    "name": "tmpt",
+    "value": "1:CAESGDQThVMaNj5DhkfO0VmkJQcNeitNAS52_xiEtP7RBiI1jy3xlcshCJCF34Bx5dGwJxxZl9DA6LHYn5ILus1R5cjuGWAL_zM3_o5syWEoEUIhpFiVAzY",
+    "domain": ".tmtickets.co.za",
+    "path": "/"
+  }
+]
