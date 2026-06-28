@@ -27,6 +27,15 @@ chrome.webRequest.onAuthRequired.addListener(
 );
 
 function handleCheckoutMessage(message, sender, sendResponse) {
+  if (message.type === "QUEUD_BASKET") {
+    checkoutFromBasketApi(
+      `${message.apiBase}/basket/${message.basketId}`
+    )
+      .then((checkout) => runCheckout(checkout, sender.tab?.id))
+      .then(() => sendResponse({ ok: true }))
+      .catch((err) => sendResponse({ ok: false, error: String(err) }));
+    return true;
+  }
   if (message.type !== "QUEUD_CHECKOUT") {
     return false;
   }
