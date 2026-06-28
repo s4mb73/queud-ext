@@ -126,15 +126,62 @@ def basket_session(basket_id: str) -> JSONResponse:
     )
 
 
+QUEUD_EXTENSION_ID = "cinkmcgingnfflllnhdfckdfcfcnocjk"
+
+
 @app.get("/basket/{basket_id}")
 def basket_page(basket_id: str) -> HTMLResponse:
-    """Browser lands here; queud extension fetches /session and opens checkout."""
+    """Browser lands here; page fetches session and pings queud extension."""
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><title>queud</title></head>
 <body style="background:#0a1628;color:#fff;font-family:system-ui,sans-serif;text-align:center;padding:3rem">
-<p>Opening checkout…</p>
-<p style="opacity:.7;font-size:14px">Load the queud Chrome extension if nothing happens.</p>
-<script id="queud-basket-id" type="application/json">{json.dumps(basket_id)}</script>
+<p id="queud-status">Opening checkout…</p>
+<p style="opacity:.7;font-size:14px">Requires queud Chrome extension (v1.3.2+).</p>
+<script>
+(function() {{
+  const EXT_ID = {json.dumps(QUEUD_EXTENSION_ID)};
+  const basketId = {json.dumps(basket_id)};
+  const status = document.getElementById("queud-status");
+
+  function fail(msg) {{
+    status.textContent = msg;
+    status.style.color = "#f87171";
+  }}
+
+  fetch("/basket/" + basketId + "/session")
+    .then(function(r) {{
+      if (!r.ok) throw new Error("Session " + r.status + " — link used or expired");
+      return r.json();
+    }})
+    .then(function(data) {{
+      if (typeof chrome === "undefined" || !chrome.runtime || !chrome.runtime.sendMessage) {{
+        fail("Install queud extension, then reload this page");
+        return;
+      }}
+      chrome.runtime.sendMessage(
+        EXT_ID,
+        {{
+          type: "QUEUD_CHECKOUT",
+          session: data.session,
+          endUrl: data.endUrl,
+          proxy: data.proxy || ""
+        }},
+        function(resp) {{
+          if (chrome.runtime.lastError) {{
+            fail("Extension: " + chrome.runtime.lastError.message);
+            return;
+          }}
+          if (!resp || !resp.ok) {{
+            fail("Checkout failed: " + (resp && resp.error ? resp.error : "unknown"));
+          }}
+        }}
+      );
+    }})
+    .catch(function(err) {{
+      fail(err.message || String(err));
+    }});
+}})();
+</script>
 </body></html>"""
     return HTMLResponse(html)
 

@@ -26,12 +26,20 @@ chrome.webRequest.onAuthRequired.addListener(
   ["asyncBlocking"]
 );
 
+async function resolveTabId(sender) {
+  if (sender.tab?.id) {
+    return sender.tab.id;
+  }
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  return tab?.id;
+}
+
 function handleCheckoutMessage(message, sender, sendResponse) {
   if (message.type === "QUEUD_BASKET") {
     checkoutFromBasketApi(
       `${message.apiBase}/basket/${message.basketId}`
     )
-      .then((checkout) => runCheckout(checkout, sender.tab?.id))
+      .then((checkout) => resolveTabId(sender).then((tabId) => runCheckout(checkout, tabId)))
       .then(() => sendResponse({ ok: true }))
       .catch((err) => sendResponse({ ok: false, error: String(err) }));
     return true;
@@ -39,7 +47,8 @@ function handleCheckoutMessage(message, sender, sendResponse) {
   if (message.type !== "QUEUD_CHECKOUT") {
     return false;
   }
-  runCheckout(message, sender.tab?.id)
+  resolveTabId(sender)
+    .then((tabId) => runCheckout(message, tabId))
     .then(() => sendResponse({ ok: true }))
     .catch((err) => sendResponse({ ok: false, error: String(err) }));
   return true;
@@ -213,7 +222,7 @@ function setCookie(cookie) {
     name: cookie.name,
     value: cookie.value,
     path,
-    httpOnly: Boolean(cookie.httponly),
+    httpOnly: Boolean(cookie.httpOnly ?? cookie.httponly),
     secure: Boolean(cookie.secure),
   };
 

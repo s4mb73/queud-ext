@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "queud",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Inject checkout session cookies and open your basket.",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxbEdcBhOTr2TA/RE1HK15TgeYNpBVWe5y5eC47gFeOnPDFO/I9udFltbZyM+rSF4AJJX0usEP71nKdXacHovFSWa4lXxsf6+q8aOj7RdUEeJ20Ar6RW3BwJEu23KCf24cp9AxMcaRYCu4T46bdwSgfOg4pUA3qBjA/SLKKmOWDkBLTcQ+fN/C9soqgxHeW9KUwAeHap6gbNp1hAhpKYvzmJNl7+QZirECnazWAGbYK1qyHx2qRY1lCYaNIjGGpFDMmXaRkIhZM6BsuGDlwuGbW5JDFqa2JIjrwSiAd6Xz90a5WnscpErLja6yJ3JjdYVYz111IZuTEJSe6ZIgK+3zQIDAQAB",
   "icons": {
@@ -44,6 +44,8 @@
   "host_permissions": ["<all_urls>"],
   "externally_connectable": {
     "matches": [
+      "https://*.up.railway.app/*",
+      "https://*.railway.app/*",
       "https://cdn.discordapp.com/*",
       "https://media.discordapp.net/*",
       "https://0x0.st/*"
