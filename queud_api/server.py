@@ -101,12 +101,8 @@ def create_basket(
 
 
 @app.get("/basket/{basket_id}/session")
-def basket_session(
-    basket_id: str,
-    authorization: str | None = Header(default=None),
-    x_api_key: str | None = Header(default=None),
-) -> JSONResponse:
-    _auth(authorization, x_api_key)
+def basket_session(basket_id: str) -> JSONResponse:
+    # No API key — UUID is the one-time secret; queud extension fetches this in-browser.
     with _db() as conn:
         _purge_expired(conn)
         row = conn.execute(
