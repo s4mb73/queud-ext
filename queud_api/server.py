@@ -136,7 +136,7 @@ def basket_page(basket_id: str) -> HTMLResponse:
 <html><head><meta charset="UTF-8"><title>queud</title></head>
 <body style="background:#0a1628;color:#fff;font-family:system-ui,sans-serif;text-align:center;padding:3rem">
 <p id="queud-status">Opening checkout…</p>
-<p style="opacity:.7;font-size:14px">Requires queud Chrome extension (v1.3.2+).</p>
+<p style="opacity:.7;font-size:14px">Requires queud Chrome extension v1.3.3 (reload at chrome://extensions).</p>
 <script>
 (function() {{
   const EXT_ID = {json.dumps(QUEUD_EXTENSION_ID)};
@@ -148,34 +148,52 @@ def basket_page(basket_id: str) -> HTMLResponse:
     status.style.color = "#f87171";
   }}
 
+  function fallbackLink(data) {{
+    if (document.getElementById("queud-fallback")) return;
+    const href =
+      "chrome-extension://" + EXT_ID + "/checkout.html" +
+      "?session=" + encodeURIComponent(data.session) +
+      "&endUrl=" + encodeURIComponent(data.endUrl) +
+      (data.proxy ? "&proxy=" + encodeURIComponent(data.proxy) : "");
+    const a = document.createElement("a");
+    a.id = "queud-fallback";
+    a.href = href;
+    a.textContent = "Click here to open checkout (queud)";
+    a.style.cssText = "display:inline-block;margin-top:1.5rem;padding:12px 20px;background:#3498db;color:#fff;border-radius:8px;text-decoration:none;font-weight:600";
+    document.body.appendChild(a);
+  }}
+
   fetch("/basket/" + basketId + "/session")
     .then(function(r) {{
-      if (!r.ok) throw new Error("Session " + r.status + " — link used or expired");
+      if (!r.ok) throw new Error("Session " + r.status + " — link used or expired. Get a new Discord link.");
       return r.json();
     }})
     .then(function(data) {{
-      if (typeof chrome === "undefined" || !chrome.runtime || !chrome.runtime.sendMessage) {{
-        fail("Install queud extension, then reload this page");
+      if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.sendMessage) {{
+        chrome.runtime.sendMessage(
+          EXT_ID,
+          {{
+            type: "QUEUD_CHECKOUT",
+            session: data.session,
+            endUrl: data.endUrl,
+            proxy: data.proxy || ""
+          }},
+          function(resp) {{
+            if (chrome.runtime.lastError) {{
+              fail("Extension: " + chrome.runtime.lastError.message);
+              fallbackLink(data);
+              return;
+            }}
+            if (!resp || !resp.ok) {{
+              fail("Checkout failed: " + (resp && resp.error ? resp.error : "unknown"));
+              fallbackLink(data);
+            }}
+          }}
+        );
         return;
       }}
-      chrome.runtime.sendMessage(
-        EXT_ID,
-        {{
-          type: "QUEUD_CHECKOUT",
-          session: data.session,
-          endUrl: data.endUrl,
-          proxy: data.proxy || ""
-        }},
-        function(resp) {{
-          if (chrome.runtime.lastError) {{
-            fail("Extension: " + chrome.runtime.lastError.message);
-            return;
-          }}
-          if (!resp || !resp.ok) {{
-            fail("Checkout failed: " + (resp && resp.error ? resp.error : "unknown"));
-          }}
-        }}
-      );
+      fail("Install queud extension v1.3.3, then reload this page");
+      fallbackLink(data);
     }})
     .catch(function(err) {{
       fail(err.message || String(err));

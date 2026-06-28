@@ -318,6 +318,8 @@ def cart_via_best_available(
     count = basket_item_count(client, settings, page_url)
     if count >= settings.tickets_required:
         log(f"Cart: basket={count} — {settings.base_url}/Checkout/Basket")
+        if hasattr(client, "__dict__"):
+            client._last_carted_pair = pair
         return True
 
     commit_area = used_area if used_area is not None else _area_id_from_lock(lock_data)
@@ -342,6 +344,8 @@ def cart_via_best_available(
     count = basket_item_count(client, settings, page_url)
     if count >= settings.tickets_required:
         log(f"Cart: basket={count} after PUT commit")
+        if hasattr(client, "__dict__"):
+            client._last_carted_pair = pair
         return True
     if not ok:
         log(f"Cart: PUT commit failed: {detail[:200]}")

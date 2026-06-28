@@ -15,6 +15,7 @@ from rugby_sa.queud import (
     decode_queud_payload,
     queud_launcher_html,
 )
+from rugby_sa.basket_meta import load_cart_meta, parse_basket_html, save_cart_meta
 from rugby_sa.settings import Settings
 
 QUEUD_EXT_DIR = Path(__file__).resolve().parent.parent / "extensions" / "queud"
@@ -31,6 +32,7 @@ def write_queud_checkout_files(
     seat_start: str = "—",
     seat_end: str = "—",
     price: str = "—",
+    size: str = "—",
 ) -> Path:
     """Write checkout.txt + queud launcher HTML from cookie list."""
     out_dir = settings.http_session_file.parent
@@ -57,12 +59,85 @@ def write_queud_checkout_files(
             row=row,
             seat_start=seat_start,
             seat_end=seat_end,
+            size=size if size != "—" else section,
         )
         + "\n",
         encoding="utf-8",
     )
     proxy_html.write_text(queud_launcher_html(proxy_url), encoding="utf-8")
     reserve_html.write_text(queud_launcher_html(reserve_url), encoding="utf-8")
+    return checkout_txt
+
+
+def refresh_checkout_metadata(settings: Settings) -> Path:
+    """Reload basket in browser and rewrite checkout.txt with seat/price info."""
+    out_dir = settings.http_session_file.parent
+    checkout_txt = out_dir / "checkout.txt"
+    if not checkout_txt.exists():
+        raise FileNotFoundError("checkout.txt missing — cart or run --export-queud first")
+
+    target = settings.event_targets[0]
+    event_url = target.page_url(settings.base_url)
+    basket_url = f"{settings.base_url}/Checkout/Basket"
+    proxy_line = resolve_browser_proxy(settings)
+
+    with BrowserRequestClient(settings, proxy_line=proxy_line) as client:
+        client.ensure_event_page(event_url)
+        client.page.goto(basket_url, wait_until="domcontentloaded", timeout=120_000)
+        time.sleep(2)
+        parsed = parse_basket_html(client.page.content())
+        raw = client._context.cookies() if client._context else []
+        raw = [c for c in raw if c.get("value")]
+        reserve_url, proxy_url = build_queud_reserve_urls(
+            raw, basket_url, proxy_line=client.proxy_line
+        )
+
+    saved = load_cart_meta(out_dir) or {}
+    section = parsed["section"] if parsed["section"] != "—" else saved.get("section", "—")
+    row = parsed["row"] if parsed["row"] != "—" else saved.get("row", "—")
+    seat_start = (
+        parsed["seat_start"]
+        if parsed["seat_start"] != "—"
+        else saved.get("seat_start", "—")
+    )
+    seat_end = (
+        parsed["seat_end"] if parsed["seat_end"] != "—" else saved.get("seat_end", "—")
+    )
+    price = parsed["price"] if parsed["price"] != "—" else saved.get("price", "—")
+    size = parsed["size"] if parsed["size"] != "—" else saved.get("size", section)
+
+    checkout_txt.write_text(
+        build_queud_webhook_text(
+            reserve_url=reserve_url,
+            proxy_url=proxy_url,
+            store="Springboks TM Tickets",
+            price=price,
+            product=saved.get("product", f"Event {target.event_id}"),
+            email=settings.sarugby_email or "—",
+            quantity=int(saved.get("quantity", settings.tickets_required)),
+            section=section,
+            row=row,
+            seat_start=seat_start,
+            seat_end=seat_end,
+            size=size if size != "—" else section,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    save_cart_meta(
+        out_dir,
+        {
+            "section": section,
+            "row": row,
+            "seat_start": seat_start,
+            "seat_end": seat_end,
+            "price": price,
+            "size": size,
+            "product": f"Event {target.event_id}",
+            "quantity": settings.tickets_required,
+        },
+    )
+    log(f"Refreshed checkout.txt — {section} row {row} seats {seat_start}-{seat_end} @ {price}")
     return checkout_txt
 
 
@@ -81,6 +156,7 @@ def export_queud_checkout(settings: Settings) -> Path:
         log(f"Opening basket: {basket_url}")
         client.page.goto(basket_url, wait_until="domcontentloaded", timeout=120_000)
         time.sleep(2)
+        parsed = parse_basket_html(client.page.content())
         raw = client._context.cookies() if client._context else []
         raw = [c for c in raw if c.get("value")]
         log(f"Collected {len(raw)} cookies for queud link")
@@ -98,19 +174,34 @@ def export_queud_checkout(settings: Settings) -> Path:
     proxy_html = out_dir / "queud_proxy.html"
     reserve_html = out_dir / "queud_reserve.html"
 
+    saved = load_cart_meta(out_dir) or {}
+    section = parsed["section"] if parsed["section"] != "—" else saved.get("section", "—")
+    row = parsed["row"] if parsed["row"] != "—" else saved.get("row", "—")
+    seat_start = (
+        parsed["seat_start"]
+        if parsed["seat_start"] != "—"
+        else saved.get("seat_start", "—")
+    )
+    seat_end = (
+        parsed["seat_end"] if parsed["seat_end"] != "—" else saved.get("seat_end", "—")
+    )
+    price = parsed["price"] if parsed["price"] != "—" else saved.get("price", "—")
+    size = parsed["size"] if parsed["size"] != "—" else saved.get("size", section)
+
     checkout_txt.write_text(
         build_queud_webhook_text(
             reserve_url=reserve_url,
             proxy_url=proxy_url,
             store="Springboks TM Tickets",
-            price="—",
+            price=price,
             product=f"Event {target.event_id}",
             email=settings.sarugby_email or "—",
             quantity=settings.tickets_required,
-            section="—",
-            row="—",
-            seat_start="—",
-            seat_end="—",
+            section=section,
+            row=row,
+            seat_start=seat_start,
+            seat_end=seat_end,
+            size=size if size != "—" else section,
         )
         + "\n",
         encoding="utf-8",
@@ -137,6 +228,11 @@ def send_checkout_to_discord(settings: Settings) -> bool:
     if not checkout_txt.exists():
         log("No checkout.txt — run: python run.py --export-queud")
         return False
+    try:
+        refresh_checkout_metadata(settings)
+        checkout_txt = settings.http_session_file.parent / "checkout.txt"
+    except Exception as exc:
+        log(f"Could not refresh basket metadata ({exc}) — using checkout.txt as-is")
     send_queud_checkout_discord(checkout_txt, settings)
     log("Sent Adonis-style queud checkout embed to Discord")
     return True

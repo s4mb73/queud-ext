@@ -8,11 +8,12 @@ from typing import Any
 
 import requests as http_requests
 
+from rugby_sa.basket_meta import load_cart_meta
 from rugby_sa.queud import parse_queud_checkout_url, queud_discord_launcher_html
-from rugby_sa.settings import Settings
+from rugby_sa.settings import Settings, DATA_DIR
 
 QUEUD_EMBED_COLOR = 0x3498DB
-QUEUD_VERSION = "1.3.0"
+QUEUD_VERSION = "1.3.2"
 
 
 def parse_checkout_metadata(text: str) -> dict[str, str]:
@@ -207,6 +208,25 @@ def build_queud_webhook_payload(
     cookie_editor_json: list[dict[str, Any]] | None = None,
 ) -> tuple[dict[str, Any], dict[str, tuple[str, bytes, str]] | None]:
     meta = parse_checkout_metadata(checkout_text)
+    saved = load_cart_meta(DATA_DIR) or {}
+    if meta.get("price") in ("—", "", None) and saved.get("price"):
+        meta["price"] = saved["price"]
+    if meta.get("size") in ("—", "", None) and saved.get("size"):
+        meta["size"] = saved["size"]
+    seat_data = meta.get("seat_data", "")
+    if "Sec: —" in seat_data and saved.get("section"):
+        seats = (
+            f"[{saved['seat_start']}]"
+            if saved.get("seat_start") == saved.get("seat_end")
+            else f"[{saved.get('seat_start', '—')} - {saved.get('seat_end', '—')}]"
+        )
+        meta["seat_data"] = "\n".join(
+            [
+                f"Sec: {saved.get('section', '—')}",
+                f"Row: {saved.get('row', '—')}",
+                f"Seats: {seats}",
+            ]
+        )
     reserve_url = meta.get("reserve_url", "")
     proxy_url = meta.get("proxy_url", "")
     if not reserve_url or not proxy_url:

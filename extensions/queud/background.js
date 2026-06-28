@@ -63,8 +63,18 @@ chrome.runtime.onMessageExternal.addListener((message, sender, sendResponse) => 
 });
 
 function decodeSession(session) {
-  const raw = decodeURIComponent(session);
-  return JSON.parse(decodeURIComponent(escape(atob(raw))));
+  let raw = session;
+  try {
+    raw = decodeURIComponent(session);
+  } catch (_) {
+    raw = session;
+  }
+  const binary = atob(raw);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return JSON.parse(new TextDecoder().decode(bytes));
 }
 
 function checkoutFromUrl(url) {

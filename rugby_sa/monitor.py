@@ -19,6 +19,7 @@ from rugby_sa.availability import (
 from rugby_sa.cart import cart_best_pair
 from rugby_sa.browser_request import BrowserRequestClient
 from rugby_sa.cookie_export import collect_checkout_cookies_from_client
+from rugby_sa.basket_meta import parse_basket_html, save_cart_meta
 from rugby_sa.queud_export import write_queud_checkout_files
 from rugby_sa.client import TmptClient
 from rugby_sa.log_util import log
@@ -94,17 +95,54 @@ def fetch_event_snapshot(
                 log(f"Collected {len(checkout_cookies)} cookies for webhook export")
                 raw = client._context.cookies() if client._context else []
                 raw = [c for c in raw if c.get("value")]
-                pair = pairs[0] if pairs else None
+                pair = getattr(client, "_last_carted_pair", None) or (
+                    pairs[0] if pairs else None
+                )
+                basket_html = client.page.content()
+                parsed = parse_basket_html(basket_html)
+                section = parsed["section"]
+                row = parsed["row"]
+                seat_start = parsed["seat_start"]
+                seat_end = parsed["seat_end"]
+                price = parsed["price"]
+                size = parsed["size"]
+                if pair:
+                    if section == "—":
+                        section = pair.section
+                    if row == "—":
+                        row = pair.row
+                    if seat_start == "—":
+                        seat_start = pair.seat_start
+                    if seat_end == "—":
+                        seat_end = pair.seat_end
+                    if price == "—":
+                        price = price_labels.get(pair.price_level, "—")
+                    if size == "—":
+                        size = pair.section
                 write_queud_checkout_files(
                     settings,
                     raw,
                     basket_url=f"{settings.base_url}/Checkout/Basket",
                     proxy_line=client.proxy_line,
-                    section=pair.section if pair else "—",
-                    row=pair.row if pair else "—",
-                    seat_start=pair.seat_start if pair else "—",
-                    seat_end=pair.seat_end if pair else "—",
-                    price=price_labels.get(pair.price_level, "—") if pair else "—",
+                    section=section,
+                    row=row,
+                    seat_start=seat_start,
+                    seat_end=seat_end,
+                    price=price,
+                    size=size,
+                )
+                save_cart_meta(
+                    settings.http_session_file.parent,
+                    {
+                        "section": section,
+                        "row": row,
+                        "seat_start": seat_start,
+                        "seat_end": seat_end,
+                        "price": price,
+                        "size": size,
+                        "product": f"Event {target.event_id}",
+                        "quantity": settings.tickets_required,
+                    },
                 )
                 log("Wrote queud checkout.txt for Discord")
             except Exception as exc:
