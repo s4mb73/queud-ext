@@ -1,0 +1,6 @@
+requests
+beautifulsoup4
+curl_cffi
+playwright
+fastapi
+uvicorn

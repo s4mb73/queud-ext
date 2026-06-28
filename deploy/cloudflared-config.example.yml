@@ -1,0 +1,17 @@
+# Cloudflare Tunnel — expose local queud API without opening router ports.
+# 1. cloudflared tunnel login
+# 2. cloudflared tunnel create queud-api
+# 3. Copy this file to %USERPROFILE%\.cloudflared\config.yml
+# 4. Replace YOUR_TUNNEL_ID and api.yourdomain.com
+# 5. cloudflared tunnel route dns queud-api api.yourdomain.com
+# 6. cloudflared tunnel run queud-api
+#
+# Start the API first: python run.py --queud-api
+
+tunnel: YOUR_TUNNEL_ID
+credentials-file: C:\Users\YOUR_USER\.cloudflared\YOUR_TUNNEL_ID.json
+
+ingress:
+  - hostname: api.yourdomain.com
+    service: http://127.0.0.1:8787
+  - service: http_status:404
