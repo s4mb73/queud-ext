@@ -8,7 +8,8 @@ COPY requirements-api.txt .
 RUN python -m pip install --no-cache-dir -r requirements-api.txt
 
 COPY queud_api ./queud_api
+COPY start.py .
 
 ENV QUEUD_API_DB=/app/data/queud_baskets.db
 
-CMD ["sh", "-c", "uvicorn queud_api.server:app --host 0.0.0.0 --port ${PORT:-8080}"]
+CMD ["python", "start.py"]

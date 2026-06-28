@@ -1,10 +1,11 @@
-# Must use Dockerfile builder — do NOT set a custom Nixpacks build command.
+# Dockerfile builder only. Start via: python start.py (reads PORT from env).
 
 [build]
 builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
+startCommand = "python start.py"
 healthcheckPath = "/health"
 healthcheckTimeout = 30
 restartPolicyType = "ON_FAILURE"
