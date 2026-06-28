@@ -1,0 +1,14 @@
+.env
+.git
+data/
+extensions/
+rugby_sa/
+scripts/
+tests/
+deploy/
+*.md
+requirements.txt
+pyproject.toml
+Procfile
+runtime.txt
+nixpacks.toml
