@@ -13,7 +13,7 @@ from rugby_sa.queud import parse_queud_checkout_url, queud_discord_launcher_html
 from rugby_sa.settings import Settings, DATA_DIR
 
 QUEUD_EMBED_COLOR = 0x3498DB
-QUEUD_VERSION = "1.3.2"
+QUEUD_VERSION = "1.3.5"
 
 
 def parse_checkout_metadata(text: str) -> dict[str, str]:

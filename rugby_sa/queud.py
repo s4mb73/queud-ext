@@ -8,7 +8,7 @@ import json
 from typing import Any
 from urllib.parse import parse_qs, quote, unquote, urlparse
 
-from rugby_sa.adonis import build_adonis_payload, proxy_line_to_url
+from rugby_sa.adonis import build_adonis_payload, filter_checkout_cookies, proxy_line_to_url
 
 # Stable ID from extensions/queud/manifest.json public key
 QUEUD_EXTENSION_ID = "cinkmcgingnfflllnhdfckdfcfcnocjk"
@@ -26,7 +26,7 @@ def build_queud_checkout_url(
     proxy_line: str = "",
 ) -> str:
     """Link opened in Chrome with queud extension installed."""
-    payload = build_adonis_payload(raw_cookies)
+    payload = build_adonis_payload(filter_checkout_cookies(raw_cookies))
     if not payload["cookies"]:
         return checkout_url
 

@@ -77,9 +77,17 @@ def _purge_expired(conn: sqlite3.Connection) -> None:
     conn.execute("DELETE FROM baskets WHERE created_at < ?", (cutoff,))
 
 
+QUEUD_API_VERSION = "1.3.5"
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok"}
+    return {"status": "ok", "version": QUEUD_API_VERSION}
+
+
+@app.get("/version")
+def version() -> dict[str, str]:
+    return {"version": QUEUD_API_VERSION}
 
 
 @app.post("/basket")
@@ -136,9 +144,10 @@ def basket_page(basket_id: str) -> HTMLResponse:
 <html><head><meta charset="UTF-8"><title>queud</title></head>
 <body style="background:#0a1628;color:#fff;font-family:system-ui,sans-serif;text-align:center;padding:3rem">
 <p id="queud-status">Opening checkout…</p>
-<p style="opacity:.7;font-size:14px">Requires queud Chrome extension v1.3.3 (reload at chrome://extensions).</p>
+<p style="opacity:.7;font-size:14px">Requires queud Chrome extension v1.3.5 (reload at chrome://extensions).</p>
 <script>
 (function() {{
+  window.__queudBasketInit = 1;
   const EXT_ID = {json.dumps(QUEUD_EXTENSION_ID)};
   const basketId = {json.dumps(basket_id)};
   const status = document.getElementById("queud-status");
@@ -192,7 +201,7 @@ def basket_page(basket_id: str) -> HTMLResponse:
         );
         return;
       }}
-      fail("Install queud extension v1.3.3, then reload this page");
+      fail("Install queud extension v1.3.5, then reload this page");
       fallbackLink(data);
     }})
     .catch(function(err) {{

@@ -41,7 +41,10 @@ function handleCheckoutMessage(message, sender, sendResponse) {
     )
       .then((checkout) => resolveTabId(sender).then((tabId) => runCheckout(checkout, tabId)))
       .then(() => sendResponse({ ok: true }))
-      .catch((err) => sendResponse({ ok: false, error: String(err) }));
+      .catch((err) => {
+        resolveTabId(sender).then((tabId) => showTabError(tabId, String(err)));
+        sendResponse({ ok: false, error: String(err) });
+      });
     return true;
   }
   if (message.type !== "QUEUD_CHECKOUT") {
@@ -50,7 +53,10 @@ function handleCheckoutMessage(message, sender, sendResponse) {
   resolveTabId(sender)
     .then((tabId) => runCheckout(message, tabId))
     .then(() => sendResponse({ ok: true }))
-    .catch((err) => sendResponse({ ok: false, error: String(err) }));
+    .catch((err) => {
+      resolveTabId(sender).then((tabId) => showTabError(tabId, String(err)));
+      sendResponse({ ok: false, error: String(err) });
+    });
   return true;
 }
 
@@ -128,9 +134,9 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   const url = tab.url;
 
   try {
-    if (/\/basket\/[0-9a-f-]{36}/i.test(url)) {
-      checkout = await checkoutFromBasketApi(url);
-    } else if (url.includes("/checkout.html?")) {
+    // Basket pages: content script (v1.3.1 HTML) or inline script (v1.3.2+).
+    // Do not fetch /session here — it is one-time and failures were silent on old HTML.
+    if (url.includes("/checkout.html?")) {
       checkout = checkoutFromUrl(url);
     } else if (url.includes("session=") && url.includes("endUrl=")) {
       checkout = checkoutFromUrl(url);
@@ -155,6 +161,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   } catch (err) {
     processedTabs.delete(tabId);
     console.error("queud checkout failed", err);
+    await showTabError(tabId, String(err.message || err));
   }
 });
 
@@ -220,38 +227,102 @@ async function setCookies(cookieList) {
   for (const domain of domains) {
     await clearDomain(domain);
   }
+  let set = 0;
   for (const cookie of cookieList) {
-    await setCookie(cookie);
+    try {
+      const ok = await setCookie(cookie);
+      if (ok) {
+        set += 1;
+      }
+    } catch (err) {
+      console.warn("queud skip cookie", cookie.name, cookie.domain, err);
+    }
   }
+  if (set === 0) {
+    throw new Error("no cookies could be set — reload extension and retry");
+  }
+}
+
+function normalizeSameSite(value) {
+  if (!value) {
+    return undefined;
+  }
+  const normalized = String(value).toLowerCase();
+  if (normalized === "lax" || normalized === "strict" || normalized === "none") {
+    return normalized;
+  }
+  if (normalized === "no_restriction") {
+    return "no_restriction";
+  }
+  return undefined;
 }
 
 function setCookie(cookie) {
   const path = cookie.path || "/";
-  const host = (cookie.domain || "").replace(/^\./, "").replace(/\.$/, "");
+  const rawDomain = String(cookie.domain || "").replace(/\.$/, "");
+  const host = rawDomain.replace(/^\./, "");
+  if (!host) {
+    return Promise.resolve(false);
+  }
+
+  const httpOnly = Boolean(cookie.httpOnly ?? cookie.httponly);
+  const secure = Boolean(cookie.secure ?? true);
+  const sameSite = normalizeSameSite(cookie.sameSite ?? cookie.same_site);
   const details = {
     name: cookie.name,
     value: cookie.value,
     path,
-    httpOnly: Boolean(cookie.httpOnly ?? cookie.httponly),
-    secure: Boolean(cookie.secure),
+    url: `https://${host}${path.startsWith("/") ? path : `/${path}`}`,
+    httpOnly,
+    secure,
   };
 
-  if (cookie.domain && cookie.domain.startsWith(".")) {
-    details.url = "https://" + host;
-    details.domain = host;
-  } else {
-    details.url = "https://" + (cookie.domain || host);
+  if (rawDomain.startsWith(".")) {
+    details.domain = rawDomain.startsWith(".") ? rawDomain : `.${host}`;
+  }
+  if (sameSite) {
+    details.sameSite = sameSite;
   }
 
-  return new Promise((resolve, reject) => {
-    chrome.cookies.set(details, (result) => {
+  return new Promise((resolve) => {
+    chrome.cookies.set(details, () => {
       if (chrome.runtime.lastError) {
-        reject(chrome.runtime.lastError);
+        console.warn(
+          "queud cookie set failed",
+          cookie.name,
+          details.domain || host,
+          chrome.runtime.lastError.message
+        );
+        resolve(false);
       } else {
-        resolve(result);
+        resolve(true);
       }
     });
   });
+}
+
+async function showTabError(tabId, message) {
+  if (!tabId) {
+    return;
+  }
+  try {
+    await chrome.scripting.executeScript({
+      target: { tabId },
+      func: (msg) => {
+        const status =
+          document.getElementById("queud-status") ||
+          document.querySelector("p") ||
+          document.body;
+        if (status) {
+          status.textContent = msg;
+          status.style.color = "#f87171";
+        }
+      },
+      args: [message],
+    });
+  } catch (err) {
+    console.warn("queud could not show tab error", err);
+  }
 }
 
 function clearDomain(domain) {

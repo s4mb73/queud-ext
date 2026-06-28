@@ -1,5 +1,9 @@
-/** Primary checkout trigger on Railway basket pages (v1.3.3). */
+/** Checkout trigger on Railway basket pages (v1.3.1 HTML fallback). */
 (async function () {
+  if (window.__queudBasketInit) {
+    return;
+  }
+
   const match = location.pathname.match(/\/basket\/([0-9a-f-]{36})/i);
   if (!match) {
     return;
