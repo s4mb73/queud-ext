@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "rugby-sa"
+name = "queud-aio"
 version = "0.1.0"
-description = "Springboks TMTickets monitor with Discord alerts and HTTP cart"
+description = "Queud AIO — ticket monitor, checkout, and signup automation"
 requires-python = ">=3.11"
 dependencies = [
     "requests",
@@ -18,11 +18,11 @@ dependencies = [
 dev = ["pytest"]
 
 [project.scripts]
-rugby-sa = "rugby_sa.cli:main"
+queud-aio = "queud_aio.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["rugby_sa*"]
+include = ["queud_aio*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

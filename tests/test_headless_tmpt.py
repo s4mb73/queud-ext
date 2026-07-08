@@ -2,7 +2,7 @@
 
 import time
 
-from rugby_sa.headless_tmpt import HeadlessTmptPool, TmptSolveResult, _cache_key
+from queud_aio.headless_tmpt import HeadlessTmptPool, TmptSolveResult, _cache_key
 
 
 def _result(proxy: str = "", age: float = 0.0) -> TmptSolveResult:

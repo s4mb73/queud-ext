@@ -3,8 +3,8 @@
 import json
 from dataclasses import replace
 
-from rugby_sa.proxy import resolve_browser_proxy
-from rugby_sa.settings import Settings
+from queud_aio.proxy import resolve_browser_proxy
+from queud_aio.settings import Settings
 
 
 def _settings(**overrides) -> Settings:

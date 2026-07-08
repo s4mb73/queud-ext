@@ -1,0 +1,53 @@
+---
+pid: 50000
+cwd: "C:\Users\sammy\Rugby SA"
+command: "Set-Location \"C:\\Users\\sammy\\Rugby SA\"; $env:PYTHONPATH=\"C:\\Users\\sammy\\Rugby SA\"; python scripts\\capture_umg_submit.py"
+started_at: 2026-07-07T11:27:31.779Z
+running_for_ms: 86555700 
+---
+Traceback (most recent call last):
+  File "C:\Users\sammy\Rugby SA\scripts\capture_umg_submit.py", line 49, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\sammy\Rugby SA\scripts\capture_umg_submit.py", line 36, in main
+    page.select_option("#dob_day", "15")
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\sync_api\_generated.py", line 11974, in select_option
+    self._sync(
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\_impl\_page.py", line 1060, in select_option
+    return await self._main_frame.select_option(**params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\_impl\_frame.py", line 786, in select_option
+    return await self._channel.send("selectOption", self._timeout, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\_impl\_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\_impl\_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.select_option: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("#dob_day")
+    - locator resolved to <select id="dob_day" name="dob_day" class="medium fieldfont_type">…</select>
+  - attempting select option action
+    2 × waiting for element to be visible and enabled
+      - element is not visible
+    - retrying select option action
+    - waiting 20ms
+    2 × waiting for element to be visible and enabled
+      - element is not visible
+    - retrying select option action
+      - waiting 100ms
+    58 × waiting for element to be visible and enabled
+       - element is not visible
+     - retrying select option action
+       - waiting 500ms
+
+
+---
+exit_code: -1
+elapsed_ms: 86555700
+ended_at: 2026-07-08T11:30:24.306Z
+---

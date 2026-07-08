@@ -2,7 +2,7 @@ import base64
 import json
 from urllib.parse import parse_qs, urlparse
 
-from rugby_sa.adonis import (
+from queud_aio.adonis import (
     adonis_internet_shortcut,
     adonis_launcher_html,
     build_adonis_checkout_url,

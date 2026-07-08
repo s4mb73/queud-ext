@@ -1,0 +1,65 @@
+---
+pid: 23744
+cwd: "C:\Users\sammy\Rugby SA"
+command: "cd \"C:\\Users\\sammy\\Rugby SA\"; $env:PYTHONPATH=\"C:\\Users\\sammy\\Rugby SA\"; python -c \"
+from rugby_sa.client import TmptClient
+from rugby_sa.settings import Settings
+
+s = Settings.load()
+proxy = s.proxy_file.read_text().splitlines()[0].strip()
+page_url = s.event_targets[0].page_url(s.base_url)
+client = TmptClient(s, proxy_line=proxy)
+try:
+    client.refresh_tmpt(page_url)
+finally:
+    client.close()
+\""
+started_at: 2026-07-01T19:14:38.061Z
+running_for_ms: 1250008  
+---
+[2026-07-01 20:14:39] INFO Using ZA proxy evo-pro.wiredproxies.com (session y8A1wr1xLEUp...)
+[2026-07-01 20:14:39] [tmpt] Seeding EPSF session...
+[2026-07-01 20:14:49] WARNING HTTP tmpt failed (is_proxy_connect error: wreq::Error { kind: Request, uri: https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7, source: Error { kind: ProxyConnect, source: Some(TunnelUnexpectedEof), connect_info: None } }) — falling back to headless pool
+[2026-07-01 20:14:49] INFO [headless] ZA proxy evo-pro.wiredproxies.com (session y8A1wr1xLEUp...)
+[2026-07-01 20:14:50] INFO [headless] opening https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+Traceback (most recent call last):
+  File "<string>", line 10, in <module>
+  File "C:\Users\sammy\Rugby SA\rugby_sa\client.py", line 52, in refresh_tmpt
+    refresh_tmpt(self, page_url)
+  File "C:\Users\sammy\Rugby SA\rugby_sa\epsf.py", line 167, in refresh_tmpt
+    refresh_tmpt_headless(client, page_url, use_pool=True)
+  File "C:\Users\sammy\Rugby SA\rugby_sa\headless_tmpt.py", line 339, in refresh_tmpt_headless
+    result = get_tmpt_pool(settings).acquire(page_url, client.proxy_line)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sammy\Rugby SA\rugby_sa\headless_tmpt.py", line 272, in acquire
+    result = fut.result(timeout=self.settings.tmpt_headless_timeout + 60)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sammy\Rugby SA\rugby_sa\headless_tmpt.py", line 162, in solve
+    page.goto(page_url, wait_until="domcontentloaded", timeout=120_000)
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\sync_api\_generated.py", line 9612, in goto
+    self._sync(
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\_impl\_page.py", line 557, in goto
+    return await self._main_frame.goto(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\_impl\_frame.py", line 156, in goto
+    await self._channel.send(
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\_impl\_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sammy\AppData\Local\Programs\Python\Python312\Lib\site-packages\playwright\_impl\_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.Error: Page.goto: net::ERR_EMPTY_RESPONSE at https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+Call log:
+  - navigating to "https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7", waiting until "domcontentloaded"
+

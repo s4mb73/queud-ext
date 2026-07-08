@@ -1,0 +1,2 @@
+URL,Email,Password,Quantity,Webhook,Site
+https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7,you@example.com,your-password,2,https://discord.com/api/webhooks/YOUR/WEBHOOK,springboks

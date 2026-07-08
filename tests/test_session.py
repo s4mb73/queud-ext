@@ -2,7 +2,7 @@
 
 from types import SimpleNamespace
 
-from rugby_sa.session import needs_tmpt_refresh
+from queud_aio.session import needs_tmpt_refresh
 
 
 class _FakeJar:

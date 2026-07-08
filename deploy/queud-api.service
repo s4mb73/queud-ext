@@ -5,12 +5,12 @@ After=network.target
 [Service]
 Type=simple
 User=www-data
-WorkingDirectory=/opt/rugby-sa
+WorkingDirectory=/opt/queud-aio
 Environment=QUEUD_API_HOST=127.0.0.1
 Environment=QUEUD_API_PORT=8787
-Environment=QUEUD_API_DB=/opt/rugby-sa/data/queud_baskets.db
+Environment=QUEUD_API_DB=/opt/queud-aio/data/queud_baskets.db
 # Environment=QUEUD_API_KEY=your-secret
-ExecStart=/opt/rugby-sa/.venv/bin/python run.py --queud-api
+ExecStart=/opt/queud-aio/.venv/bin/python run.py --queud-api
 Restart=on-failure
 RestartSec=5
 

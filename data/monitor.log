@@ -1,0 +1,88 @@
+[2026-06-28 15:36:12] INFO Rugby SA monitor — root C:\Users\sammy\Rugby SA
+[2026-06-28 15:36:13] INFO Leave Chrome open when it appears (Akamai EPSF). Ctrl+C to stop.
+[2026-06-28 15:36:13] INFO Monitor events [42] x2 adjacent every 300s (browser+request API)
+[2026-06-28 15:36:13] INFO Browser requests: ZA proxy evo-pro.wiredproxies.com (session sTWLoe57n4RQ...)
+[2026-06-28 15:36:14] INFO Browser requests: ZA proxy session sTWLoe57n4RQ...
+[2026-06-28 15:36:15] INFO Browser requests: chrome profile
+[2026-06-28 15:36:15] INFO Checking event 42 (position=7)...
+[2026-06-28 15:36:15] INFO Browser: opening https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+[2026-06-28 15:36:31] INFO Cart: attempting Block 109 row B seats 1-2 (level 6)
+[2026-06-28 15:36:34] INFO Cart: BA lock search area 1130 (PriceBandId=6)
+[2026-06-28 15:36:36] INFO Cart: BA locked 2 seat(s) — area 1130
+[2026-06-28 15:36:39] INFO Cart: basket=2 after PUT commit
+[2026-06-28 15:36:46] INFO Wrote queud checkout.txt for Discord
+[2026-06-28 15:36:49] INFO Event 42: Springboks vs All Blacks @ FNB Stadium — Sat 5 September 2026, 17:00
+[2026-06-28 15:36:49] INFO Event 42 (position=7): Event Information Screen - eTickets
+[2026-06-28 15:36:49] INFO Pairs: 3774 adjacent runs (82 exact x2, 77751 seats total)
+[2026-06-28 15:36:49] INFO   - Block 109 row B seats 1-2 (level 6)
+[2026-06-28 15:36:49] INFO   - Block 118 row A seats 30-31 (level 6)
+[2026-06-28 15:36:49] INFO   - Block 120 row D seats 23-24 (level 6)
+[2026-06-28 15:36:49] INFO   - Block 123 row KK seats 16-17 (level 5)
+[2026-06-28 15:36:49] INFO   - Block 133 row A seats 1-2 (level 6)
+[2026-06-28 15:36:49] INFO   - Block 134 row NN seats 1-2 (level 6)
+[2026-06-28 15:36:49] INFO   - Block 137 row M seats 15-16 (level 6)
+[2026-06-28 15:36:49] INFO   - Block 139 row V seats 1-2 (level 6)
+[2026-06-28 15:36:49] INFO   - ... +3766 more
+[2026-06-28 15:36:49] INFO Cart: seats added to basket
+[2026-06-28 15:36:49] INFO https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+[2026-06-28 15:36:49] INFO 
+[2026-06-28 15:36:49] INFO Event 42: change detected
+[2026-06-28 15:36:54] INFO Event 42: alert sent
+[2026-07-01 19:49:53] INFO Rugby SA monitor — root C:\Users\sammy\Rugby SA
+[2026-07-01 19:49:53] INFO Request-based monitor (wreq). Ctrl+C to stop.
+[2026-07-01 19:49:53] INFO Monitor events [42] x2 adjacent every 300s (wreq HTTP)
+[2026-07-01 19:49:53] INFO Using ZA proxy evo-pro.wiredproxies.com (session sTWLoe57n4RQ...)
+[2026-07-01 19:49:53] INFO Checking event 42 (position=7)...
+[2026-07-01 19:50:02] WARNING HTTP tmpt failed (reCAPTCHA reload: token not found ()]}'
+["rresp",null,null,null,null,null,1])) — falling back to headless pool
+[2026-07-01 19:50:02] INFO [headless] ZA proxy evo-pro.wiredproxies.com (session sTWLoe57n4RQ...)
+[2026-07-01 19:50:03] INFO [headless] opening https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+[2026-07-01 20:24:06] INFO Rugby SA monitor — root C:\Users\sammy\Rugby SA
+[2026-07-01 20:24:06] INFO Request-based monitor (wreq). Ctrl+C to stop.
+[2026-07-01 20:24:06] INFO Monitor events [42] x2 adjacent every 300s (wreq HTTP)
+[2026-07-01 20:24:06] INFO Using ZA proxy evo-pro.wiredproxies.com (session sTWLoe57n4RQ...)
+[2026-07-01 20:24:06] INFO Checking event 42 (position=7)...
+[2026-07-01 20:24:30] WARNING HTTP tmpt failed (GEC succeeded but tmpt cookie missing) — falling back to headless pool
+[2026-07-01 20:24:30] INFO [headless] ZA proxy evo-pro.wiredproxies.com (session sTWLoe57n4RQ...)
+[2026-07-01 20:24:31] INFO [headless] opening https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+[2026-07-01 20:24:57] WARNING [headless] tmpt acquired but EPSF not cleared (url=https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7) — cookies may not replay over HTTP
+[2026-07-01 20:24:57] INFO tmpt acquired (headless)
+[2026-07-01 20:25:00] INFO Event 42 availability error: is_decode error: wreq::Error { kind: Decode, source: Error("EOF while parsing a value", line: 1, column: 0) }
+[2026-07-01 20:25:01] INFO Event 42 (position=7): (no title)
+[2026-07-01 20:25:01] INFO Status: no adjacent x2 unrestricted seats
+[2026-07-01 20:25:01] INFO https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+[2026-07-01 20:25:01] INFO 
+[2026-07-01 20:25:01] INFO No changes across monitored events
+[2026-07-01 20:27:42] INFO Rugby SA monitor — root C:\Users\sammy\Rugby SA
+[2026-07-01 20:27:42] INFO Request-based monitor (wreq). Ctrl+C to stop.
+[2026-07-01 20:27:42] INFO Monitor events [42] x2 adjacent every 300s (wreq HTTP)
+[2026-07-01 20:27:42] INFO Using ZA proxy evo-pro.wiredproxies.com (session sTWLoe57n4RQ...)
+[2026-07-01 20:27:42] INFO Checking event 42 (position=7)...
+[2026-07-01 20:27:50] INFO Error: is_proxy_connect error: wreq::Error { kind: Request, uri: https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7, source: Error { kind: ProxyConnect, source: Some(TunnelUnsuccessful), connect_info: None } }
+[2026-07-01 20:30:01] INFO Checking event 42 (position=7)...
+[2026-07-01 20:30:01] INFO Using browser session cookies (_abck + tmpt)
+[2026-07-01 20:30:05] INFO Event 42 availability error: is_decode error: wreq::Error { kind: Decode, source: Error("EOF while parsing a value", line: 1, column: 0) }
+[2026-07-01 20:30:06] INFO Event 42 (position=7): (no title)
+[2026-07-01 20:30:06] INFO Status: no adjacent x2 unrestricted seats
+[2026-07-01 20:30:06] INFO https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+[2026-07-01 20:30:06] INFO 
+[2026-07-01 20:30:06] INFO No changes across monitored events
+[2026-07-01 20:32:50] INFO Checking event 42 (position=7)...
+[2026-07-01 20:33:18] WARNING HTTP tmpt failed (Page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://springboks.tmtickets.co.za/
+Call log:
+  - navigating to "https://springboks.tmtickets.co.za/", waiting until "domcontentloaded"
+) — falling back to headless pool
+[2026-07-01 20:33:18] INFO [headless] ZA proxy evo-pro.wiredproxies.com (session sTWLoe57n4RQ...)
+[2026-07-01 20:33:19] INFO [headless] opening https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+[2026-07-01 20:33:43] INFO Error: Page.goto: net::ERR_EMPTY_RESPONSE at https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+Call log:
+  - navigating to "https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7", waiting until "domcontentloaded"
+
+[2026-07-01 20:35:06] INFO Checking event 42 (position=7)...
+[2026-07-01 20:35:06] INFO Using browser session cookies (_abck + tmpt)
+[2026-07-01 20:35:14] INFO Event 42 availability error: is_decode error: wreq::Error { kind: Decode, source: Error("EOF while parsing a value", line: 1, column: 0) }
+[2026-07-01 20:35:21] INFO Event 42 (position=7): (no title)
+[2026-07-01 20:35:21] INFO Status: no adjacent x2 unrestricted seats
+[2026-07-01 20:35:21] INFO https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+[2026-07-01 20:35:21] INFO 
+[2026-07-01 20:35:21] INFO No changes across monitored events

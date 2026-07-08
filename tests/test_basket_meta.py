@@ -1,4 +1,4 @@
-from rugby_sa.basket_meta import parse_basket_html
+from queud_aio.basket_meta import parse_basket_html
 
 
 def test_parse_basket_html_extracts_block_row_seats_price():

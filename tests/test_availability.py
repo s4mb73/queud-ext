@@ -1,7 +1,7 @@
 """Tests for availability parsing."""
 
-from rugby_sa.availability import parse_availability
-from rugby_sa.models import SeatPair
+from queud_aio.availability import parse_availability
+from queud_aio.models import SeatPair
 
 
 def _sample_section(

@@ -1,0 +1,31 @@
+---
+pid: 134884
+cwd: "C:\Users\sammy\Rugby SA"
+command: "cd \"C:\\Users\\sammy\\Rugby SA\"; $env:PYTHONPATH=\"C:\\Users\\sammy\\Rugby SA\"; $env:SPRINGBOKS_PROXY=\"evo-pro.wiredproxies.com:62345:PP_P3KRZ9X-country-ZA-session-sTWLoe57n4RQ:6th33k6w\"; python -c \"
+from rugby_sa.client import TmptClient
+from rugby_sa.settings import Settings
+s = Settings.load()
+url = s.event_targets[0].page_url(s.base_url)
+c = TmptClient(s)
+try:
+    c.refresh_tmpt(url)
+    print('SUCCESS')
+except Exception as e:
+    print('FAILED:', e)
+finally:
+    c.close()
+\""
+started_at: 2026-07-01T19:17:32.492Z
+running_for_ms: 1075005  
+---
+[2026-07-01 20:17:33] INFO Using ZA proxy evo-pro.wiredproxies.com (session sTWLoe57n4RQ...)
+[2026-07-01 20:17:33] [tmpt] Seeding EPSF session...
+[2026-07-01 20:17:35] [tmpt] Getting reCAPTCHA token (headless)...
+[2026-07-01 20:17:53] [tmpt] reCAPTCHA token acquired (2425 chars)
+[2026-07-01 20:17:56] WARNING HTTP tmpt failed (GEC succeeded but tmpt cookie missing) — falling back to headless pool
+[2026-07-01 20:17:56] INFO [headless] ZA proxy evo-pro.wiredproxies.com (session sTWLoe57n4RQ...)
+[2026-07-01 20:17:57] INFO [headless] opening https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+[2026-07-01 20:18:13] INFO [headless] tmpt set — reloading event page...
+[2026-07-01 20:19:59] WARNING [headless] tmpt acquired but EPSF not cleared (url=https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7) — cookies may not replay over HTTP
+[2026-07-01 20:19:59] INFO tmpt acquired (headless)
+SUCCESS

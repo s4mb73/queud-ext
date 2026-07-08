@@ -2,14 +2,17 @@
 
 from dataclasses import replace
 
-from rugby_sa.cart import (
+from queud_aio.cart import (
+    _akamai_blocked,
     _area_id_from_lock,
+    _fast_lock_attempts,
     cart_api_headers,
     locked_seats_from_response,
     pair_allowed,
+    pick_best_lock_result,
 )
-from rugby_sa.models import SeatPair
-from rugby_sa.settings import Settings
+from queud_aio.models import SeatPair
+from queud_aio.settings import Settings
 
 
 def _settings(**overrides) -> Settings:
@@ -84,6 +87,43 @@ def test_cart_api_headers_minimal_csrf():
     }
     assert "requestverificationtoken" not in headers
     assert "Origin" not in headers
+
+
+def test_fast_lock_attempts_section_then_any():
+    pair = SeatPair("Block 109", 6, "B", "1", "2", 2)
+    event_config = {
+        "Areas": [{"Id": 1130, "Name": "Block 109"}, {"Id": 999, "Name": "Block 118"}],
+    }
+    settings = _settings(cart_lock_attempts=2)
+    attempts = _fast_lock_attempts(pair, event_config, settings)
+    assert len(attempts) == 2
+    assert attempts[0] == ("Block 109", 1130, 6)
+    assert attempts[1][0] == "any area"
+
+
+def test_akamai_blocked_detects_response():
+    assert _akamai_blocked('{"response":"block"}') is True
+    assert _akamai_blocked("HTTP 403: denied") is True
+    assert _akamai_blocked("HTTP 400: bad") is False
+
+
+def test_pick_best_lock_result_prefers_first_success():
+    results = [
+        (400, "bad"),
+        (200, '{"LockedSeats":[{"AreaId":1}]}'),
+        (200, '{"LockedSeats":[{"AreaId":2}]}'),
+    ]
+    index, parsed = pick_best_lock_result(results)
+    assert index == 1
+    assert parsed is not None
+    assert parsed[1]["LockedSeats"][0]["AreaId"] == 1
+
+
+def test_pick_best_lock_result_all_failed():
+    results = [(400, "a"), (500, "b")]
+    index, parsed = pick_best_lock_result(results)
+    assert index == -1
+    assert parsed is None
 
 
 def test_pair_allowed_no_filters():

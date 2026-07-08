@@ -1,0 +1,26 @@
+---
+pid: 139112
+cwd: "C:\Users\sammy\Rugby SA"
+command: "cd \"C:\\Users\\sammy\\Rugby SA\"; python rd_monitor.py"
+started_at: 2026-07-01T19:27:41.466Z
+running_for_ms: 480000   
+---
+[2026-07-01 20:27:42] INFO Rugby SA monitor — root C:\Users\sammy\Rugby SA
+[2026-07-01 20:27:42] INFO Request-based monitor (wreq). Ctrl+C to stop.
+[2026-07-01 20:27:42] INFO Monitor events [42] x2 adjacent every 300s (wreq HTTP)
+[2026-07-01 20:27:42] INFO Using ZA proxy evo-pro.wiredproxies.com (session sTWLoe57n4RQ...)
+[2026-07-01 20:27:42] INFO Checking event 42 (position=7)...
+[2026-07-01 20:27:50] INFO Error: is_proxy_connect error: wreq::Error { kind: Request, uri: https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7, source: Error { kind: ProxyConnect, source: Some(TunnelUnsuccessful), connect_info: None } }
+[2026-07-01 20:32:50] INFO Checking event 42 (position=7)...
+[2026-07-01 20:32:52] [tmpt] Seeding EPSF session...
+[2026-07-01 20:32:55] [tmpt] Getting reCAPTCHA token (headless)...
+[2026-07-01 20:33:18] WARNING HTTP tmpt failed (Page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://springboks.tmtickets.co.za/
+Call log:
+  - navigating to "https://springboks.tmtickets.co.za/", waiting until "domcontentloaded"
+) — falling back to headless pool
+[2026-07-01 20:33:18] INFO [headless] ZA proxy evo-pro.wiredproxies.com (session sTWLoe57n4RQ...)
+[2026-07-01 20:33:19] INFO [headless] opening https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+[2026-07-01 20:33:43] INFO Error: Page.goto: net::ERR_EMPTY_RESPONSE at https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7
+Call log:
+  - navigating to "https://springboks.tmtickets.co.za/EDP/Event/Index/42?position=7", waiting until "domcontentloaded"
+

@@ -29,7 +29,7 @@ def _url_from_checkout(prefix: str) -> str:
 
 
 def _payload_from_url(url: str) -> dict:
-    from rugby_sa.adonis import decode_adonis_payload
+    from queud_aio.adonis import decode_adonis_payload
 
     b64 = url.split("extension=")[1].split("&endUrl=")[0]
     return decode_adonis_payload(b64)
